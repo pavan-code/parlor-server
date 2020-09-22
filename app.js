@@ -4,16 +4,20 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var passport = require('passport')
+// var authenticate = require('./authenticate');
 
 // router links
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var dishRouter = require('./routes/dishRouter');
-var cartRouter = require('./routes/cartRouter');
+var usersRouter = require('./routes/users.router');
+var dishRouter = require('./routes/dish.router');
+var cartRouter = require('./routes/cart.router');
 
 // data base connection
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/parlor', { useNewUrlParser : true, useUnifiedTopology: true, useCreateIndex : true })
+const url1 = 'mongodb://localhost:27017/parlor';
+const url2 = 'mongodb+srv://pavan:mongodb@101@mflix.naobe.mongodb.net/mflix?retryWrites=true&w=majority'
+mongoose.connect(url2, { useNewUrlParser : true, useUnifiedTopology: true, useCreateIndex : true, useFindAndModify: false })
 .then(db => console.log('Connected to database successfully!!\n\n'))
 .catch(err => console.log(err))
 
@@ -30,6 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+app.use(passport.initialize())
 
 // api end points
 app.use('/', indexRouter);

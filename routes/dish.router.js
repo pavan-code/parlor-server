@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Dishes = require('../models/dish');
+const Dishes = require('../models/dish.model');
 const cors = require('./cors');
+const authenticate = require('../authenticate');
 
 const dishRouter = express.Router();
 dishRouter.use(bodyParser.json());
@@ -12,6 +13,7 @@ dishRouter.route('/')
 
 .get(cors.cors, (req, res, next) => {
     Dishes.find({})
+    .populate('comments.author')
     .then(dishes => {
         res.statusCode = 200;
         res.setHeader('Content-type', 'application/json');
@@ -69,6 +71,7 @@ dishRouter.route('/:dishId')
 })
 
 .put(cors.corsWithOptions, (req, res, next) => {
+    console.log(req.body);
     Dishes.findByIdAndUpdate(req.params.dishId, { $set : req.body }, { new : true })
     .then(dish => {
         res.statusCode = 200;

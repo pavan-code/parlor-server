@@ -11,6 +11,10 @@ const commentSchema = new Schema({
     comment : {
         type : String,
         required : true
+    },
+    author : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'user'                
     }
 },{
     timestamps : true
@@ -20,7 +24,7 @@ const dishSchema = new Schema({
     name : {
         type : String,
         required : true,
-        unique : true
+        // unique : true
     },
     image : {
         type : String,
@@ -43,6 +47,6 @@ const dishSchema = new Schema({
     timestamps : true
 })
 
-const Dish = mongoose.model('dish', dishSchema);
+const Dish = mongoose.model('dish', dishSchema, 'dishes');
 
 module.exports = Dish;
